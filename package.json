@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Beken-S/node#readme",
   "dependencies": {
-    "colors": "^1.4.0"
+    "colors": "^1.4.0",
+    "luxon": "^2.3.1"
   }
 }
