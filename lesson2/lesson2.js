@@ -28,13 +28,13 @@ function getDateDifference(date1, date2) {
     .toObject();
 }
 
-class Timer {
+class Timer extends EventEmitter {
   _currentTime = null;
 
   constructor(name, endTime) {
+    super();
     this.name = name;
     this.endTime = DateTime.fromISO(endTime);
-    this.emitter = new EventEmitter();
   }
 
   start() {
@@ -47,7 +47,7 @@ class Timer {
 
   stop() {
     clearInterval(this._timerObj);
-    this.emitter.emit('stop', {
+    this.emit('stop', {
       [this.name]: `завершен.`,
     });
   }
@@ -57,7 +57,7 @@ class Timer {
       this.endTime,
       this._currentTime
     );
-    this.emitter.emit('tick', {
+    this.emit('tick', {
       [this.name]:
         (years > 0 ? `years: ${years}, ` : '') +
         (months > 0 ? `months: ${months}, ` : '') +
@@ -83,11 +83,11 @@ class TimersList {
     timeStringList.forEach((timeString, index) => {
       const timer = new Timer(index + 1, timeString);
 
-      timer.emitter.on('tick', (tick) => {
+      timer.on('tick', (tick) => {
         this.updateState(tick);
         this.renderState();
       });
-      timer.emitter.on('stop', (stop) => {
+      timer.on('stop', (stop) => {
         this.updateState(stop);
         this.renderState();
       });
